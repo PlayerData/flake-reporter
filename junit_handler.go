@@ -47,25 +47,35 @@ func updateTestStats(client *firestore.Client, ctx context.Context, project stri
 	return err
 }
 
-func (handler *JUnitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+func populateFormValues(r *http.Request, project *string, branch *string, junitXml *bytes.Buffer) (err error) {
 	r.ParseMultipartForm(32 << 20)
-	var xml bytes.Buffer
 
-	project := r.FormValue("project")
-	branch := r.FormValue("branch")
+	*project = r.FormValue("project")
+	*branch = r.FormValue("branch")
 
 	file, _, err := r.FormFile("file")
 	if err != nil {
-		w.WriteHeader(http.StatusUnprocessableEntity)
-		fmt.Fprintf(w, "%s", err)
-		return
+		return err
 	}
 
 	defer file.Close()
 
-	io.Copy(&xml, file)
+	io.Copy(junitXml, file)
 
-	suites, err := junit.Ingest(xml.Bytes())
+	return nil
+}
+
+func (handler *JUnitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
+	var project string
+	var branch string
+	var junitXml bytes.Buffer
+	err := populateFormValues(r, &project, &branch, &junitXml)
+	if err != nil {
+		w.WriteHeader(http.StatusUnprocessableEntity)
+		fmt.Fprintf(w, "%s", err)
+	}
+
+	suites, err := junit.Ingest(junitXml.Bytes())
 	if err != nil {
 		w.WriteHeader(http.StatusUnprocessableEntity)
 		fmt.Fprintf(w, "%s", err)
