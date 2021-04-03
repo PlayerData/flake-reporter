@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="integration" tests="3" failures="0" errors="0" time="42.113">
+  <testsuite name="Session Tags" errors="0" failures="0" skipped="0" timestamp="2021-04-03T15:58:29" time="41.971" tests="3">
+    <testcase classname="Session Tags can create a session tag" name="Session Tags can create a session tag" time="11.581">
+    </testcase>
+    <testcase classname="Session Tags can update a session tag" name="Session Tags can update a session tag" time="6.556">
+    </testcase>
+    <testcase classname="Session Tags can destroy a session tag" name="Session Tags can destroy a session tag" time="4.871">
+    </testcase>
+  </testsuite>
+</testsuites>
