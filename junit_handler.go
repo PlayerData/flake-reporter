@@ -9,6 +9,8 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/joshdk/go-junit"
+	"google.golang.org/grpc/codes"
+	"google.golang.org/grpc/status"
 )
 
 type JUnitHandler struct {
@@ -21,6 +23,18 @@ func updateTestStats(client *firestore.Client, ctx context.Context, project stri
 	doc := client.Doc(path)
 
 	stats := TestStats{SuccessCount: 0, FailureCount: 0}
+
+	docRef, err := doc.Get(ctx)
+	if err != nil && status.Code(err) != codes.NotFound {
+		return err
+	}
+
+	if docRef.Exists() {
+		err = docRef.DataTo(&stats)
+		if err != nil {
+			return err
+		}
+	}
 
 	if test.Status == junit.StatusPassed {
 		stats.SuccessCount += 1
