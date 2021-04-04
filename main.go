@@ -8,11 +8,6 @@ import (
 	"cloud.google.com/go/firestore"
 )
 
-type TestStats struct {
-	FailureCount int `firestore:"failure_count"`
-	SuccessCount int `firestore:"success_count"`
-}
-
 func main() {
 	ctx := context.Background()
 

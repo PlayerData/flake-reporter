@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="integration" tests="3" failures="3" errors="0" time="35.133">
+  <testsuite name="Session Tags" errors="0" failures="3" skipped="0" timestamp="2021-04-04T11:52:38" time="35.035" tests="3">
+    <testcase classname="Session Tags can create a session tag" name="Session Tags can create a session tag" time="0.001">
+      <failure>FetchError: request to http://localhost:3000/liveness failed, reason: connect ECONNREFUSED 127.0.0.1:3000
+    at ClientRequest.&lt;anonymous&gt; (/Users/hayden/development/PlayerData/app/mobile/node_modules/node-fetch/lib/index.js:1461:11)
+    at ClientRequest.emit (node:events:369:20)
+    at Socket.socketErrorListener (node:_http_client:469:9)
+    at Socket.emit (node:events:369:20)
+    at emitErrorNT (node:internal/streams/destroy:188:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:153:3)
+    at processTicksAndRejections (node:internal/process/task_queues:81:21)</failure>
+      <failure>Error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Staff / Athlete”) TIMEOUT(5s)
+TIP: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+    at withTimeout (/Users/hayden/development/PlayerData/app/mobile/e2e/helpers/selectClub.js:5:8)
+    at tryCatch (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:63:40)
+    at Generator.invoke [as _invoke] (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:293:22)
+    at Generator.next (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:118:21)
+    at tryCatch (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:63:40)
+    at invoke (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:154:20)
+    at /Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:189:11
+    at new Promise (&lt;anonymous&gt;)
+    at callInvokeWithMethodAndArg (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:188:16)
+    at AsyncIterator.enqueue (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:211:13)
+    at AsyncIterator.next (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:118:21)</failure>
+    </testcase>
+    <testcase classname="Session Tags can update a session tag" name="Session Tags can update a session tag" time="0">
+      <failure>FetchError: request to http://localhost:3000/liveness failed, reason: connect ECONNREFUSED 127.0.0.1:3000
+    at ClientRequest.&lt;anonymous&gt; (/Users/hayden/development/PlayerData/app/mobile/node_modules/node-fetch/lib/index.js:1461:11)
+    at ClientRequest.emit (node:events:369:20)
+    at Socket.socketErrorListener (node:_http_client:469:9)
+    at Socket.emit (node:events:369:20)
+    at emitErrorNT (node:internal/streams/destroy:188:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:153:3)
+    at processTicksAndRejections (node:internal/process/task_queues:81:21)</failure>
+      <failure>Error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Staff / Athlete”) TIMEOUT(5s)
+TIP: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+    at withTimeout (/Users/hayden/development/PlayerData/app/mobile/e2e/helpers/selectClub.js:5:8)
+    at tryCatch (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:63:40)
+    at Generator.invoke [as _invoke] (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:293:22)
+    at Generator.next (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:118:21)
+    at tryCatch (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:63:40)
+    at invoke (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:154:20)
+    at /Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:189:11
+    at new Promise (&lt;anonymous&gt;)
+    at callInvokeWithMethodAndArg (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:188:16)
+    at AsyncIterator.enqueue (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:211:13)
+    at AsyncIterator.next (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:118:21)</failure>
+    </testcase>
+    <testcase classname="Session Tags can destroy a session tag" name="Session Tags can destroy a session tag" time="0">
+      <failure>FetchError: request to http://localhost:3000/liveness failed, reason: connect ECONNREFUSED 127.0.0.1:3000
+    at ClientRequest.&lt;anonymous&gt; (/Users/hayden/development/PlayerData/app/mobile/node_modules/node-fetch/lib/index.js:1461:11)
+    at ClientRequest.emit (node:events:369:20)
+    at Socket.socketErrorListener (node:_http_client:469:9)
+    at Socket.emit (node:events:369:20)
+    at emitErrorNT (node:internal/streams/destroy:188:8)
+    at emitErrorCloseNT (node:internal/streams/destroy:153:3)
+    at processTicksAndRejections (node:internal/process/task_queues:81:21)</failure>
+      <failure>Error: Test Failed: Timed out while waiting for expectation: TOBEVISIBLE WITH MATCHER(text == “Staff / Athlete”) TIMEOUT(5s)
+TIP: To print view hierarchy on failed actions/matches, use log-level verbose or higher.
+    at withTimeout (/Users/hayden/development/PlayerData/app/mobile/e2e/helpers/selectClub.js:5:8)
+    at tryCatch (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:63:40)
+    at Generator.invoke [as _invoke] (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:293:22)
+    at Generator.next (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:118:21)
+    at tryCatch (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:63:40)
+    at invoke (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:154:20)
+    at /Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:189:11
+    at new Promise (&lt;anonymous&gt;)
+    at callInvokeWithMethodAndArg (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:188:16)
+    at AsyncIterator.enqueue (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:211:13)
+    at AsyncIterator.next (/Users/hayden/development/PlayerData/app/mobile/node_modules/regenerator-runtime/runtime.js:118:21)</failure>
+    </testcase>
+  </testsuite>
+</testsuites>

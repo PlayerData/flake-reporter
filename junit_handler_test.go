@@ -3,6 +3,7 @@ package main
 import (
 	"bytes"
 	"context"
+	"fmt"
 	"io"
 	"log"
 	"mime/multipart"
@@ -10,6 +11,7 @@ import (
 	"net/http/httptest"
 	"os"
 	"path/filepath"
+	"reflect"
 	"testing"
 
 	"cloud.google.com/go/firestore"
@@ -61,7 +63,6 @@ func uploadTestResult(t *testing.T, firestoreClient *firestore.Client, ctx conte
 
 	writer.WriteField("project", "test-project")
 	writer.WriteField("branch", "master")
-	writer.WriteField("build-number", "1")
 	prepareFileUpload(t, writer, fixtureName)
 
 	req, err := http.NewRequest("POST", "/recv/junit", body)
@@ -82,41 +83,31 @@ func uploadTestResult(t *testing.T, firestoreClient *firestore.Client, ctx conte
 	}
 }
 
-func readTestStats(t *testing.T, client *firestore.Client, ctx context.Context, docPath string, testStats *TestStats) {
-	resultDoc, err := client.Doc(docPath).Get(ctx)
-	if err != nil {
-		t.Fatal(err)
-		return
-	}
-
-	err = resultDoc.DataTo(testStats)
-	if err != nil {
-		t.Fatal(err)
-		return
-	}
-}
-
-func TestReceiveJUnitSuccessReport(t *testing.T) {
+func TestUpdateTestSummary(t *testing.T) {
 	ctx := context.Background()
 	firestoreClient := newFirestoreTestClient(ctx)
-
 	clearFirestore(t)
 
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
-
-	var result TestStats
-
-	readTestStats(t, firestoreClient, ctx, "projects/test-project/branches/master/suites/Session Tags/tests/Session Tags can create a session tag", &result)
-	if result.SuccessCount != 1 {
-		t.Fatalf("incorrect success count %v", result.SuccessCount)
-		return
-	}
-
+	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
+	uploadTestResult(t, firestoreClient, ctx, "junit-failure.xml")
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
 
-	readTestStats(t, firestoreClient, ctx, "projects/test-project/branches/master/suites/Session Tags/tests/Session Tags can create a session tag", &result)
-	if result.SuccessCount != 2 {
-		t.Fatalf("incorrect success count %v", result.SuccessCount)
-		return
+	err := firestoreClient.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
+		summary, err := readTestSummary(firestoreClient, tx, "Session Tags", "Session Tags can create a session tag", "master")
+		if err != nil {
+			t.Error(err)
+			return err
+		}
+
+		if !reflect.DeepEqual(summary.Results, []int{1, 1, 0, 1}) {
+			return fmt.Errorf("summary results wrong: %v", summary.Results)
+		}
+
+		return nil
+	})
+
+	if err != nil {
+		t.Fatal(err)
 	}
 }

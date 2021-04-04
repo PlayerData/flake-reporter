@@ -9,42 +9,11 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/joshdk/go-junit"
-	"google.golang.org/grpc/codes"
-	"google.golang.org/grpc/status"
 )
 
 type JUnitHandler struct {
 	client *firestore.Client
 	ctx    context.Context
-}
-
-func updateTestStats(client *firestore.Client, ctx context.Context, project string, branch string, suite junit.Suite, test junit.Test) (err error) {
-	path := fmt.Sprintf("projects/%s/branches/%s/suites/%s/tests/%s", project, branch, suite.Name, test.Name)
-	doc := client.Doc(path)
-
-	stats := TestStats{SuccessCount: 0, FailureCount: 0}
-
-	docRef, err := doc.Get(ctx)
-	if err != nil && status.Code(err) != codes.NotFound {
-		return err
-	}
-
-	if docRef.Exists() {
-		err = docRef.DataTo(&stats)
-		if err != nil {
-			return err
-		}
-	}
-
-	if test.Status == junit.StatusPassed {
-		stats.SuccessCount += 1
-	} else {
-		stats.FailureCount += 1
-	}
-
-	_, err = doc.Set(ctx, stats)
-
-	return err
 }
 
 func populateFormValues(r *http.Request, project *string, branch *string, junitXml *bytes.Buffer) (err error) {
@@ -84,7 +53,7 @@ func (handler *JUnitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for _, suite := range suites {
 		for _, test := range suite.Tests {
-			err = updateTestStats(handler.client, handler.ctx, project, branch, suite, test)
+			err = updateTestSummary(handler.client, handler.ctx, project, suite.Name, branch, test)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, "%s", err)
