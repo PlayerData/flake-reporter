@@ -13,7 +13,6 @@ import (
 	"testing"
 
 	"cloud.google.com/go/firestore"
-	"google.golang.org/api/iterator"
 )
 
 func newFirestoreTestClient(ctx context.Context) *firestore.Client {
@@ -25,41 +24,17 @@ func newFirestoreTestClient(ctx context.Context) *firestore.Client {
 	return client
 }
 
-func clearFirestore(ctx context.Context, client *firestore.Client) error {
-	collection := client.Collection("projects")
+func clearFirestore(t *testing.T) {
+	req, err := http.NewRequest("DELETE", "http://localhost:8080/emulator/v1/projects/test-project/databases/(default)/documents", nil)
+	if err != nil {
+		t.Fatal(err)
 
-	for {
-		// Get a batch of documents
-		iter := collection.Documents(ctx)
-		numDeleted := 0
+	}
 
-		// Iterate through the documents, adding
-		// a delete operation for each one to a
-		// WriteBatch.
-		batch := client.Batch()
-		for {
-			doc, err := iter.Next()
-			if err == iterator.Done {
-				break
-			}
-			if err != nil {
-				return err
-			}
-
-			batch.Delete(doc.Ref)
-			numDeleted++
-		}
-
-		// If there are no documents to delete,
-		// the process is over.
-		if numDeleted == 0 {
-			return nil
-		}
-
-		_, err := batch.Commit(ctx)
-		if err != nil {
-			return err
-		}
+	client := &http.Client{}
+	_, err = client.Do(req)
+	if err != nil {
+		t.Fatal(err)
 	}
 }
 
@@ -125,7 +100,7 @@ func TestReceiveJUnitSuccessReport(t *testing.T) {
 	ctx := context.Background()
 	firestoreClient := newFirestoreTestClient(ctx)
 
-	clearFirestore(ctx, firestoreClient)
+	clearFirestore(t)
 
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
 
