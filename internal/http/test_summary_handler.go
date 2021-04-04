@@ -4,9 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"net/http"
-	"strings"
 
 	"cloud.google.com/go/firestore"
+	"github.com/gorilla/mux"
 	"playerdata.co.uk/flake-reporter/internal/models"
 )
 
@@ -16,9 +16,9 @@ type TestSummaryHandler struct {
 }
 
 func (handler *TestSummaryHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	pathComponents := strings.Split(r.URL.Path, "/")
-	testName := pathComponents[len(pathComponents)-1]
-	suiteName := pathComponents[len(pathComponents)-2]
+	vars := mux.Vars(r)
+	testName := vars["test"]
+	suiteName := vars["suite"]
 
 	payload := models.TestSummary{
 		Test:  testName,

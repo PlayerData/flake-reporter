@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/gorilla/mux"
 	"playerdata.co.uk/flake-reporter/internal/models"
 	"playerdata.co.uk/flake-reporter/internal/test"
 )
@@ -29,15 +30,16 @@ func TestTestSummaryHandler(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	req, err := http.NewRequest("GET", "/summary/projects/test-project/suites/test-suite/example test", nil)
+	req, err := http.NewRequest("GET", "/summary/test-project/test-suite/example test", nil)
 	if err != nil {
 		t.Fatal(err)
 	}
 
 	res := httptest.NewRecorder()
 
-	handler := http.Handler(&TestSummaryHandler{Client: firestoreClient, Ctx: ctx})
-	handler.ServeHTTP(res, req)
+	router := mux.NewRouter()
+	router.Handle("/summary/{project}/{suite}/{test}", &TestSummaryHandler{Client: firestoreClient, Ctx: ctx})
+	router.ServeHTTP(res, req)
 
 	if status := res.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v", status)

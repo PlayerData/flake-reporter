@@ -6,6 +6,7 @@ import (
 	nethttp "net/http"
 
 	"cloud.google.com/go/firestore"
+	"github.com/gorilla/mux"
 	"playerdata.co.uk/flake-reporter/internal/http"
 )
 
@@ -18,8 +19,11 @@ func main() {
 	}
 	defer firestoreClient.Close()
 
-	nethttp.Handle("/recv/junit", &http.JUnitHandler{Client: firestoreClient, Ctx: ctx})
-	nethttp.Handle("/summary", &http.TestSummaryHandler{Client: firestoreClient, Ctx: ctx})
+	r := mux.NewRouter()
+	r.Handle("/recv/junit", &http.JUnitHandler{Client: firestoreClient, Ctx: ctx})
+	r.Handle("/summary/{project}/{suite}/{test}", &http.TestSummaryHandler{Client: firestoreClient, Ctx: ctx})
 
-	log.Fatal(nethttp.ListenAndServe(":8080", nil))
+	nethttp.Handle("/", r)
+
+	log.Fatal(nethttp.ListenAndServe(":9090", nil))
 }
