@@ -1,11 +1,10 @@
-package main
+package http
 
 import (
 	"bytes"
 	"context"
 	"fmt"
 	"io"
-	"log"
 	"mime/multipart"
 	"net/http"
 	"net/http/httptest"
@@ -15,33 +14,13 @@ import (
 	"testing"
 
 	"cloud.google.com/go/firestore"
+
+	"playerdata.co.uk/flake-reporter/internal/models"
+	"playerdata.co.uk/flake-reporter/internal/test"
 )
 
-func newFirestoreTestClient(ctx context.Context) *firestore.Client {
-	client, err := firestore.NewClient(ctx, "test-project")
-	if err != nil {
-		log.Fatalf("firebase.NewClient err: %v", err)
-	}
-
-	return client
-}
-
-func clearFirestore(t *testing.T) {
-	req, err := http.NewRequest("DELETE", "http://localhost:8080/emulator/v1/projects/test-project/databases/(default)/documents", nil)
-	if err != nil {
-		t.Fatal(err)
-
-	}
-
-	client := &http.Client{}
-	_, err = client.Do(req)
-	if err != nil {
-		t.Fatal(err)
-	}
-}
-
 func prepareFileUpload(t *testing.T, writer *multipart.Writer, filename string) {
-	path := "./fixtures/" + filename
+	path := "../../fixtures/" + filename
 	file, err := os.Open(path)
 	if err != nil {
 		t.Fatal(err)
@@ -74,7 +53,7 @@ func uploadTestResult(t *testing.T, firestoreClient *firestore.Client, ctx conte
 
 	res := httptest.NewRecorder()
 
-	handler := http.Handler(&JUnitHandler{client: firestoreClient, ctx: ctx})
+	handler := http.Handler(&JUnitHandler{Client: firestoreClient, Ctx: ctx})
 	handler.ServeHTTP(res, req)
 
 	if status := res.Code; status != http.StatusNoContent {
@@ -85,8 +64,8 @@ func uploadTestResult(t *testing.T, firestoreClient *firestore.Client, ctx conte
 
 func TestUpdateTestSummary(t *testing.T) {
 	ctx := context.Background()
-	firestoreClient := newFirestoreTestClient(ctx)
-	clearFirestore(t)
+	firestoreClient := test.NewFirestoreTestClient(ctx)
+	test.ClearFirestore(t)
 
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
@@ -94,7 +73,7 @@ func TestUpdateTestSummary(t *testing.T) {
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
 
 	err := firestoreClient.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
-		summary, err := readTestSummary(firestoreClient, tx, "Session Tags", "Session Tags can create a session tag", "master")
+		summary, err := models.ReadBranchSummary(firestoreClient, tx, "Session Tags", "Session Tags can create a session tag", "master")
 		if err != nil {
 			t.Error(err)
 			return err

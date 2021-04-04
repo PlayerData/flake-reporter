@@ -1,4 +1,4 @@
-package main
+package http
 
 import (
 	"bytes"
@@ -9,11 +9,13 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/joshdk/go-junit"
+
+	"playerdata.co.uk/flake-reporter/internal/models"
 )
 
 type JUnitHandler struct {
-	client *firestore.Client
-	ctx    context.Context
+	Client *firestore.Client
+	Ctx    context.Context
 }
 
 func populateFormValues(r *http.Request, project *string, branch *string, junitXml *bytes.Buffer) (err error) {
@@ -53,7 +55,7 @@ func (handler *JUnitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 	for _, suite := range suites {
 		for _, test := range suite.Tests {
-			err = updateTestSummary(handler.client, handler.ctx, project, suite.Name, branch, test)
+			err = models.UpdateBranchSummary(handler.Client, handler.Ctx, project, suite.Name, branch, test)
 			if err != nil {
 				w.WriteHeader(http.StatusInternalServerError)
 				fmt.Fprintf(w, "%s", err)

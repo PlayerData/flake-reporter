@@ -3,9 +3,10 @@ package main
 import (
 	"context"
 	"log"
-	"net/http"
+	nethttp "net/http"
 
 	"cloud.google.com/go/firestore"
+	"playerdata.co.uk/flake-reporter/internal/http"
 )
 
 func main() {
@@ -17,7 +18,8 @@ func main() {
 	}
 	defer firestoreClient.Close()
 
-	http.Handle("/recv/junit", &JUnitHandler{client: firestoreClient, ctx: ctx})
+	nethttp.Handle("/recv/junit", &http.JUnitHandler{Client: firestoreClient, Ctx: ctx})
+	nethttp.Handle("/summary", &http.TestSummaryHandler{Client: firestoreClient, Ctx: ctx})
 
-	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(nethttp.ListenAndServe(":8080", nil))
 }
