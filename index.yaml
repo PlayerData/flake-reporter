@@ -3,9 +3,9 @@ entries:
   flake-reporter:
   - apiVersion: v2
     appVersion: 0.0.1
-    created: "2021-04-11T13:37:16.10980868Z"
+    created: "2021-04-11T13:43:03.406271306Z"
     description: A tool for detecting and reporting on Flaky Tests
-    digest: 020aee2e59a20d5f81b6913fdb2f2fcc8da921835c0411f763a0df848db5d722
+    digest: 10eef507a708686977a356af626fdc7ff08e4f00c4b79242a1582b0b9e66308d
     home: https://github.com/PlayerData/flake-reporter
     keywords:
     - ci
@@ -21,4 +21,4 @@ entries:
     urls:
     - https://github.com/PlayerData/flake-reporter/releases/download/flake-reporter-0.0.1/flake-reporter-0.0.1.tgz
     version: 0.0.1
-generated: "2021-04-11T13:37:16.10981448Z"
+generated: "2021-04-11T13:43:03.406275806Z"
