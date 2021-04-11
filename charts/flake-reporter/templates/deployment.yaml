@@ -30,8 +30,12 @@ spec:
             - name: FIRESTORE_PROJECT_ID
               value: {{ .Values.firestoreProjectId }}
 
+            {{ if .Values.extraEnvVars }}
             {{- toYaml .Values.extraEnvVars | nindent 12 }}
+            {{ end }}
+        {{ if .Values.sidecars }}
         {{- toYaml .Values.sidecars | nindent 8 }}
+        {{ end }}
       {{- if .Values.affinity }}
       affinity:
         {{- toYaml .Values.affinity | nindent 8 }}
