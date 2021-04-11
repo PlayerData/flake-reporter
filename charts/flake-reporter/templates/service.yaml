@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: "{{.Release.Name}}-flake-reporter"
+  labels:
+    {{- include "flakeReporter.labels" . | nindent 4 }}
+spec:
+  ports:
+    - port: 9090
+      targetPort: http
+      protocol: TCP
+      name: flake-reporter
+  selector:
+    {{- include "flakeReporter.labels" . | nindent 4 }}

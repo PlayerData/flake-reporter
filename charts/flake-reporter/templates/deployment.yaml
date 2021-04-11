@@ -1,0 +1,48 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: "{{.Release.Name}}-flake-reporter"
+  labels:
+    {{- include "flakeReporter.labels" . | nindent 4 }}
+spec:
+  replicas: {{ default 2 .Values.replicaCount }}
+  selector:
+    matchLabels:
+      {{- include "flakeReporter.labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "flakeReporter.labels" . | nindent 8 }}
+    spec:
+      serviceAccountName: {{ .Values.serviceAccount.name }}
+      containers:
+        - name: flake-reporter
+          image: ghcr.io/playerdata/flake-reporter/flake-reporter:main
+          ports:
+            - containerPort: 9090
+              name: http
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+
+          {{- with .Values.extraEnvVars }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- toYaml .Values.sidecars | nindent 8 }}
+      {{- if .Values.affinity }}
+      affinity:
+        {{- toYaml .Values.affinity | nindent 8 }}
+      {{- end }}
+      {{- if .Values.nodeSelector }}
+      nodeSelector:
+      {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- end }}
+      {{- if .Values.tolerations }}
+      tolerations:
+      {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- end }}
+      {{- if .Values.priorityClass }}
+      priorityClassName: {{ .Values.priorityClass }}
+      {{- end }}
