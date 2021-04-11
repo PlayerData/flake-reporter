@@ -26,10 +26,11 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
 
-          {{- with .Values.extraEnvVars }}
           env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
+            - name: FIRESTORE_PROJECT_ID
+              value: {{ .Values.firestoreProjectId }}
+
+            {{- toYaml .Values.extraEnvVars | nindent 12 }}
         {{- toYaml .Values.sidecars | nindent 8 }}
       {{- if .Values.affinity }}
       affinity:
