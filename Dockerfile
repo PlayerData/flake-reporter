@@ -2,6 +2,9 @@ FROM golang:alpine AS builder
 
 WORKDIR $GOPATH/src/playerdata.co.uk/flake-reporter/
 
+# Ensure CA certificates are available
+RUN apk update && apk add --no-cache ca-certificates && update-ca-certificates
+
 # Create appuser
 ENV USER=appuser
 ENV UID=1001
@@ -27,6 +30,7 @@ RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build \
 
 FROM scratch
 
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /etc/passwd /etc/passwd
 COPY --from=builder /etc/group /etc/group
 
