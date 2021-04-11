@@ -30,6 +30,10 @@ serviceAccount:
   create: true
   name: flake-reporter
 
+  # If using GCP workload identity, sets the Google Service Account to be used
+  # See https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+  # gcpServiceAccount: flake-reporter@project-id.iam.gserviceaccount.com
+
 # A list of sidecar containers. Used to run firestore emulator for chart testing
 sidecars: []
 
