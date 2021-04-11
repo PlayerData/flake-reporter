@@ -2,6 +2,16 @@
 
 A very early tool for tracking test flakiness.
 
+## Configuration
+
+### Environment Variables
+
+| Name                 | Value                                            |
+| -------------------- | ------------------------------------------------ |
+| `FIRESTORE_PROJECT_ID` | The GCP/Firebase project ID to use for Firestore |
+
+## Development
+
 ### Running the Tests
 
 First, start a firestore emulator:

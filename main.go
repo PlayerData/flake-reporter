@@ -4,6 +4,7 @@ import (
 	"context"
 	"log"
 	nethttp "net/http"
+	"os"
 
 	"cloud.google.com/go/firestore"
 	"github.com/gorilla/mux"
@@ -13,7 +14,11 @@ import (
 func main() {
 	ctx := context.Background()
 
-	firestoreClient, err := firestore.NewClient(ctx, "test-project")
+	firestoreProject := os.Getenv("FIRESTORE_PROJECT_ID")
+	if firestoreProject == "" {
+		log.Fatalf("FIRESTORE_PROJECT_ID unset")
+	}
+	firestoreClient, err := firestore.NewClient(ctx, firestoreProject)
 	if err != nil {
 		log.Fatalf("firebase.NewClient err: %v", err)
 	}
