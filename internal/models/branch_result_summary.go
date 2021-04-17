@@ -33,13 +33,13 @@ func (summary *BranchResultSummary) flakiness() float32 {
 	return 1.0 - passRate
 }
 
-func SummaryDocRef(client *firestore.Client, suite string, test string, branch string) *firestore.DocumentRef {
-	return testCollection(client, suite, test).Doc(branch)
+func SummaryDocRef(client *firestore.Client, project string, suite string, test string, branch string) *firestore.DocumentRef {
+	return testCollection(client, project, suite, test).Doc(branch)
 }
 
-func ReadBranchSummary(client *firestore.Client, tx *firestore.Transaction, suite string, test string, branch string) (BranchResultSummary, error) {
+func ReadBranchSummary(client *firestore.Client, tx *firestore.Transaction, project string, suite string, test string, branch string) (BranchResultSummary, error) {
 	var summary BranchResultSummary
-	docRef := SummaryDocRef(client, suite, test, branch)
+	docRef := SummaryDocRef(client, project, suite, test, branch)
 
 	doc, err := tx.Get(docRef)
 	if err != nil {
@@ -64,9 +64,9 @@ func resultInt(testResult junit.Test) int {
 
 func UpdateBranchSummary(client *firestore.Client, ctx context.Context, project string, suite string, branch string, testResult junit.Test) error {
 	err := client.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
-		docRef := SummaryDocRef(client, suite, testResult.Name, branch)
+		docRef := SummaryDocRef(client, project, suite, testResult.Name, branch)
 
-		summary, err := ReadBranchSummary(client, tx, suite, testResult.Name, branch)
+		summary, err := ReadBranchSummary(client, tx, project, suite, testResult.Name, branch)
 		if err != nil && status.Code(err) != codes.NotFound {
 			return err
 		}

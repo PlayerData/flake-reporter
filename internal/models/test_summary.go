@@ -8,19 +8,20 @@ import (
 )
 
 type TestSummary struct {
+	Project       string
 	Suite         string
 	Test          string
 	BranchSummary []BranchResultSummary `json:"-"`
 	Flakiness     float32
 }
 
-func testCollection(client *firestore.Client, suite string, test string) *firestore.CollectionRef {
-	collectionPath := fmt.Sprintf("projects/test-project/suites/%s/%s", suite, test)
+func testCollection(client *firestore.Client, project string, suite string, test string) *firestore.CollectionRef {
+	collectionPath := fmt.Sprintf("projects/%s/suites/%s/%s", project, suite, test)
 	return client.Collection(collectionPath)
 }
 
 func (summary *TestSummary) populateBranchResults(client *firestore.Client, ctx context.Context) error {
-	collectionRef := testCollection(client, summary.Suite, summary.Test)
+	collectionRef := testCollection(client, summary.Project, summary.Suite, summary.Test)
 	branchResultSummaryRefs := collectionRef.Documents(ctx)
 
 	branchDocuments, err := branchResultSummaryRefs.GetAll()

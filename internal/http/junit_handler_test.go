@@ -73,7 +73,7 @@ func TestUpdateTestSummary(t *testing.T) {
 	uploadTestResult(t, firestoreClient, ctx, "junit-success.xml")
 
 	err := firestoreClient.RunTransaction(ctx, func(ctx context.Context, tx *firestore.Transaction) error {
-		summary, err := models.ReadBranchSummary(firestoreClient, tx, "Session Tags", "Session Tags can create a session tag", "master")
+		summary, err := models.ReadBranchSummary(firestoreClient, tx, "test-project", "Session Tags", "Session Tags can create a session tag", "master")
 		if err != nil {
 			t.Error(err)
 			return err
