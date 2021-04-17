@@ -2,8 +2,10 @@ package test
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"testing"
 
 	"cloud.google.com/go/firestore"
@@ -19,7 +21,8 @@ func NewFirestoreTestClient(ctx context.Context) *firestore.Client {
 }
 
 func ClearFirestore(t *testing.T) {
-	req, err := http.NewRequest("DELETE", "http://localhost:8080/emulator/v1/projects/test-project/databases/(default)/documents", nil)
+	emulatorHost := os.Getenv("FIRESTORE_EMULATOR_HOST")
+	req, err := http.NewRequest("DELETE", fmt.Sprintf("http://%s/emulator/v1/projects/test-project/databases/(default)/documents", emulatorHost), nil)
 	if err != nil {
 		t.Fatal(err)
 

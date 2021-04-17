@@ -21,10 +21,10 @@ func TestTestSummaryHandler(t *testing.T) {
 	mainSummary := models.BranchResultSummary{Results: []int{1, 1, 1, 0, 1}}
 	featureBranchSummary := models.BranchResultSummary{Results: []int{0, 0, 0, 0, 1}}
 
-	docRef := models.SummaryDocRef(firestoreClient, "test-suite", "example test", "main")
+	docRef := models.SummaryDocRef(firestoreClient, "test-project", "test-suite", "example test", "main")
 	docRef.Set(ctx, mainSummary)
 
-	docRef = models.SummaryDocRef(firestoreClient, "test-suite", "example test", "feature-branch")
+	docRef = models.SummaryDocRef(firestoreClient, "test-project", "test-suite", "example test", "feature-branch")
 	_, err := docRef.Set(ctx, featureBranchSummary)
 	if err != nil {
 		t.Fatal(err)
@@ -50,6 +50,7 @@ func TestTestSummaryHandler(t *testing.T) {
 	json.Unmarshal(res.Body.Bytes(), &responsePayload)
 
 	expectedPayload := models.TestSummary{
+		Project:   "test-project",
 		Suite:     "test-suite",
 		Test:      "example test",
 		Flakiness: 0.5,

@@ -17,12 +17,14 @@ type TestSummaryHandler struct {
 
 func (handler *TestSummaryHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
-	testName := vars["test"]
+	projectName := vars["project"]
 	suiteName := vars["suite"]
+	testName := vars["test"]
 
 	payload := models.TestSummary{
-		Test:  testName,
-		Suite: suiteName,
+		Project: projectName,
+		Suite:   suiteName,
+		Test:    testName,
 	}
 
 	payload.PopulateFlakiness(handler.Client, handler.Ctx)

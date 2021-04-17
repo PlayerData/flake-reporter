@@ -16,13 +16,13 @@ func TestSummaryPopulateBranchResults(t *testing.T) {
 	mainSummary := BranchResultSummary{Results: []int{1, 1, 1, 0, 1}}
 	featureBranchSummary := BranchResultSummary{Results: []int{1, 1, 1, 0, 1}}
 
-	docRef := SummaryDocRef(firestoreClient, "test-suite", "example test", "main")
+	docRef := SummaryDocRef(firestoreClient, "test-project", "test-suite", "example test", "main")
 	docRef.Set(ctx, mainSummary)
 
-	docRef = SummaryDocRef(firestoreClient, "test-suite", "example test", "feature-branch")
+	docRef = SummaryDocRef(firestoreClient, "test-project", "test-suite", "example test", "feature-branch")
 	docRef.Set(ctx, featureBranchSummary)
 
-	summary := TestSummary{Suite: "test-suite", Test: "example test"}
+	summary := TestSummary{Project: "test-project", Suite: "test-suite", Test: "example test"}
 
 	err := summary.populateBranchResults(firestoreClient, ctx)
 	if err != nil {
