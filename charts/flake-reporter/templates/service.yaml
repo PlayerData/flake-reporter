@@ -6,7 +6,7 @@ metadata:
     {{- include "flakeReporter.labels" . | nindent 4 }}
 spec:
   ports:
-    - port: 9090
+    - port: 80
       targetPort: http
       protocol: TCP
       name: flake-reporter
