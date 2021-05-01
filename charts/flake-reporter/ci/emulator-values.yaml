@@ -1,12 +1,16 @@
-extraEnvVars:
-  - name: FIRESTORE_EMULATOR_HOST
-    value: "localhost:8080"
+deployment:
+  extraEnvVars:
+    - name: FIRESTORE_EMULATOR_HOST
+      value: "localhost:8080"
 
-sidecars:
-  - name: firestore-emulator
-    image: pathmotion/firestore-emulator-docker
-    env:
-      - name: FIRESTORE_PORT
-        value: "8080"
-      - name: FIRESTORE_PROJECT_ID
-        value: "test-project"
+  sidecars:
+    - name: firestore-emulator
+      image: pathmotion/firestore-emulator-docker
+      env:
+        - name: FIRESTORE_PORT
+          value: "8080"
+        - name: FIRESTORE_PROJECT_ID
+          value: "test-project"
+
+serviceMonitor:
+  enable: true

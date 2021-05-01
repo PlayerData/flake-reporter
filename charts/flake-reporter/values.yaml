@@ -1,42 +1,43 @@
 # The GCP project ID to use for firestore
 firestoreProjectId: test-project
 
-# Number of replicas to run
-replicaCount: 2
+deployment:
+  # Number of replicas to run
+  replicaCount: 2
 
-# See https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
-# priorityClassName: ci
+  # See https://kubernetes.io/docs/concepts/configuration/pod-priority-preemption/
+  # priorityClassName: ci
 
-# Affinity for pod assignment.
-# See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
-affinity: {}
+  # Affinity for pod assignment.
+  # See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
+  affinity: {}
 
-# Extra environment variables to pass
-# extraEnvVars: {}
+  # Extra environment variables to pass
+  # extraEnvVars: {}
 
-# Node selector for pods
-# See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
-nodeSelector: {}
+  # Node selector for pods
+  # See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#nodeselector
+  nodeSelector: {}
 
-resources:
-  limits:
-    cpu: 0.2
-    memory: 128Mi
-  requests:
-    cpu: 0.2
-    memory: 128Mi
+  resources:
+    limits:
+      cpu: 0.2
+      memory: 128Mi
+    requests:
+      cpu: 0.2
+      memory: 128Mi
+
+  # A list of sidecar containers. Used to run firestore emulator for chart testing
+  # sidecars: []
+
+  # Node tolerations for scheduled pods
+  # See https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration
+  tolerations: {}
 
 serviceAccount:
   create: true
   name: flake-reporter
 
-  # If using GCP workload identity, sets the Google Service Account to be used
-  # See https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
-  # gcpServiceAccount: flake-reporter@project-id.iam.gserviceaccount.com
-
-# A list of sidecar containers. Used to run firestore emulator for chart testing
-# sidecars: []
-
-# Node tolerations for scheduled pods
-# See https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration
-tolerations: {}
+    # If using GCP workload identity, sets the Google Service Account to be used
+    # See https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
+    # gcpServiceAccount: flake-reporter@project-id.iam.gserviceaccount.com
