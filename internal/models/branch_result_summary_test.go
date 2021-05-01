@@ -7,7 +7,7 @@ func TestBranchResultSummaryFlakiness(t *testing.T) {
 		Results: []int{1, 0, 1, 1},
 	}
 
-	flakiness := summary.flakiness()
+	flakiness := summary.Flakiness()
 
 	if flakiness != 0.25 {
 		t.Fatalf("Flakiness reported as %v", flakiness)

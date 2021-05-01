@@ -27,7 +27,7 @@ func (summary *BranchResultSummary) runCount() int {
 	return len(summary.Results)
 }
 
-func (summary *BranchResultSummary) flakiness() float32 {
+func (summary *BranchResultSummary) Flakiness() float32 {
 	passRate := float32(summary.passCount()) / float32(summary.runCount())
 
 	return 1.0 - passRate
