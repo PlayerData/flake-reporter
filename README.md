@@ -9,6 +9,7 @@ What Flake Reporter currently does:
 
 - Collect test results in JUnit format
 - Report on the flakiness of a given test across the last 100 runs
+- Expose the flakiness of tests as Prometheus metrics
 
 What Flake Reporter aims to do, in the future:
 

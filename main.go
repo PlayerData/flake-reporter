@@ -8,6 +8,8 @@ import (
 
 	"cloud.google.com/go/firestore"
 	"github.com/gorilla/mux"
+	"github.com/prometheus/client_golang/prometheus/promhttp"
+
 	"playerdata.co.uk/flake-reporter/internal/http"
 )
 
@@ -24,7 +26,10 @@ func main() {
 	}
 	defer firestoreClient.Close()
 
+	http.RegisterMetrics(firestoreClient, ctx)
+
 	r := mux.NewRouter()
+	r.Handle("/metrics", promhttp.Handler())
 	r.Handle("/recv/junit", &http.JUnitHandler{Client: firestoreClient, Ctx: ctx})
 	r.Handle("/summary/{project}/{suite}/{test}", &http.TestSummaryHandler{Client: firestoreClient, Ctx: ctx})
 
