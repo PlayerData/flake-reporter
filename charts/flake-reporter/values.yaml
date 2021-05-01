@@ -41,3 +41,7 @@ serviceAccount:
     # If using GCP workload identity, sets the Google Service Account to be used
     # See https://cloud.google.com/kubernetes-engine/docs/how-to/workload-identity
     # gcpServiceAccount: flake-reporter@project-id.iam.gserviceaccount.com
+
+# Deploy a Prometheus Operator ServiceMonitor
+serviceMonitor:
+  enable: false
