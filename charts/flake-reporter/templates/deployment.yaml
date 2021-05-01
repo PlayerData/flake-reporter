@@ -17,7 +17,7 @@ spec:
       serviceAccountName: {{ .Values.serviceAccount.name }}
       containers:
         - name: flake-reporter
-          image: ghcr.io/playerdata/flake-reporter:latest
+          image: {{ .Values.deployment.image }}
           ports:
             - containerPort: 9090
               name: http
