@@ -44,6 +44,7 @@ jobs:
         if: steps.list-changed.outputs.changed == 'true'
 
       - name: Install ServiceMonitor CRD
+        if: steps.list-changed.outputs.changed == 'true'
         run: kubectl apply -f https://raw.githubusercontent.com/prometheus-operator/prometheus-operator/master/example/prometheus-operator-crd/monitoring.coreos.com_servicemonitors.yaml
 
       - name: Run chart-testing (install)
