@@ -56,9 +56,19 @@ func uploadTestResult(t *testing.T, firestoreClient *firestore.Client, ctx conte
 	handler := http.Handler(&JUnitHandler{Client: firestoreClient, Ctx: ctx})
 	handler.ServeHTTP(res, req)
 
-	if status := res.Code; status != http.StatusNoContent {
+	if status := res.Code; status != http.StatusOK {
 		t.Errorf("handler returned wrong status code: got %v", status)
 		t.Fatalf("reponse body: got %s", res.Body.String())
+	}
+
+	expectedBody := `Ingesting test results:
+Session Tags - Session Tags can create a session tag
+Session Tags - Session Tags can update a session tag
+Session Tags - Session Tags can destroy a session tag
+`
+
+	if res.Body.String() != expectedBody {
+		t.Fatalf("response body incorrect: got %s", res.Body.String())
 	}
 }
 

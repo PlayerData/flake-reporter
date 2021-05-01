@@ -53,6 +53,8 @@ func (handler *JUnitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Fprintf(w, "%s\n", "Ingesting test results:")
+
 	for _, suite := range suites {
 		for _, test := range suite.Tests {
 			err = models.UpdateBranchSummary(handler.Client, handler.Ctx, project, suite.Name, branch, test)
@@ -61,8 +63,9 @@ func (handler *JUnitHandler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 				fmt.Fprintf(w, "%s", err)
 				return
 			}
+			fmt.Fprintf(w, "%s - %s\n", suite.Name, test.Name)
 		}
 	}
 
-	w.WriteHeader(http.StatusNoContent)
+	w.WriteHeader(http.StatusOK)
 }
