@@ -1,7 +1,7 @@
 apiVersion: v2
 description: A tool for detecting and reporting on Flaky Tests
 name: flake-reporter
-version: 0.0.6
+version: 0.0.7
 appVersion: 0.0.1
 home: https://github.com/PlayerData/flake-reporter
 sources:
