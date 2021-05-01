@@ -5,7 +5,7 @@ metadata:
   labels:
     {{- include "flakeReporter.labels" . | nindent 4 }}
 spec:
-  replicas: {{ default 2 .Values.replicaCount }}
+  replicas: {{ default 2 .Values.deployment.replicaCount }}
   selector:
     matchLabels:
       {{- include "flakeReporter.labels" . | nindent 6 }}
@@ -21,7 +21,7 @@ spec:
           ports:
             - containerPort: 9090
               name: http
-          {{- with .Values.resources }}
+          {{- with .Values.deployment.resources }}
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
@@ -30,24 +30,24 @@ spec:
             - name: FIRESTORE_PROJECT_ID
               value: {{ .Values.firestoreProjectId }}
 
-            {{ if .Values.extraEnvVars }}
-            {{- toYaml .Values.extraEnvVars | nindent 12 }}
+            {{ if .Values.deployment.extraEnvVars }}
+            {{- toYaml .Values.deployment.extraEnvVars | nindent 12 }}
             {{ end }}
-        {{ if .Values.sidecars }}
-        {{- toYaml .Values.sidecars | nindent 8 }}
+        {{ if .Values.deployment.sidecars }}
+        {{- toYaml .Values.deployment.sidecars | nindent 8 }}
         {{ end }}
-      {{- if .Values.affinity }}
+      {{- if .Values.deployment.affinity }}
       affinity:
-        {{- toYaml .Values.affinity | nindent 8 }}
+        {{- toYaml .Values.deployment.affinity | nindent 8 }}
       {{- end }}
-      {{- if .Values.nodeSelector }}
+      {{- if .Values.deployment.nodeSelector }}
       nodeSelector:
-      {{- toYaml .Values.nodeSelector | nindent 8 }}
+      {{- toYaml .Values.deployment.nodeSelector | nindent 8 }}
       {{- end }}
-      {{- if .Values.tolerations }}
+      {{- if .Values.deployment.tolerations }}
       tolerations:
-      {{- toYaml .Values.tolerations | nindent 8 }}
+      {{- toYaml .Values.deployment.tolerations | nindent 8 }}
       {{- end }}
-      {{- if .Values.priorityClass }}
-      priorityClassName: {{ .Values.priorityClass }}
+      {{- if .Values.deployment.priorityClass }}
+      priorityClassName: {{ .Values.deployment.priorityClass }}
       {{- end }}
