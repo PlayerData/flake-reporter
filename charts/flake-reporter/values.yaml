@@ -12,7 +12,7 @@ deployment:
   # See https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
   affinity: {}
 
-  image: ghcr.io/playerdata/flake-reporter:latest
+  image: ghcr.io/playerdata/flake-reporter:303027b6ba4a2638d135c43f8fc5d29fd740902e
 
   # Extra environment variables to pass
   # extraEnvVars: {}
