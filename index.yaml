@@ -3,6 +3,26 @@ entries:
   flake-reporter:
   - apiVersion: v2
     appVersion: 0.0.1
+    created: "2021-05-14T12:50:07.366561929Z"
+    description: A tool for detecting and reporting on Flaky Tests
+    digest: 2c0f33752585a92ff05a5eba554def55e1359308a21eb5564b2da134425cc04e
+    home: https://github.com/PlayerData/flake-reporter
+    keywords:
+    - ci
+    - flakes
+    - flaky-tests
+    - junit
+    - testing
+    maintainers:
+    - name: ball-hayden
+    name: flake-reporter
+    sources:
+    - https://github.com/PlayerData/flake-reporter
+    urls:
+    - https://github.com/PlayerData/flake-reporter/releases/download/flake-reporter-0.0.12/flake-reporter-0.0.12.tgz
+    version: 0.0.12
+  - apiVersion: v2
+    appVersion: 0.0.1
     created: "2021-05-05T13:18:00.847305235Z"
     description: A tool for detecting and reporting on Flaky Tests
     digest: cf9a3dae0bbf4cafab08631ea2f4069737befffef7abe513ccb76d3097850a54
@@ -221,4 +241,4 @@ entries:
     urls:
     - https://github.com/PlayerData/flake-reporter/releases/download/flake-reporter-0.0.1/flake-reporter-0.0.1.tgz
     version: 0.0.1
-generated: "2021-05-05T13:18:00.847351535Z"
+generated: "2021-05-14T12:50:07.36663133Z"
