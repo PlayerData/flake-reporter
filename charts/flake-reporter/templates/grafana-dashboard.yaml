@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: "{{.Release.Name}}-dashboard"
+  labels:
+    grafana_dashboard: "1"
+    {{- include "flakeReporter.labels" . | nindent 4 }}
+data:
+  {{ .Release.Name }}-dashboard.json: |-
+{{ .Files.Get "files/grafana.json" | indent 4 }}
